@@ -208,7 +208,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.setState({
 	        dragging: false,
 	        slackX: 0,
-	        slackY: 0
+	        slackY: 0,
+	        clientX: 0,
+	        clientY: 0
 	      });
 	    };
 	  }
