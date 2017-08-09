@@ -16,6 +16,7 @@ type DraggableState = {
   dragged: boolean,
   x: number, y: number,
   slackX: number, slackY: number,
+  clientX?: number, clientY?: number,
   isElementSVG: boolean
 };
 
@@ -281,7 +282,9 @@ export default class Draggable extends React.Component {
     const newState: $Shape<DraggableState> = {
       dragging: false,
       slackX: 0,
-      slackY: 0
+      slackY: 0,
+      clientX: 0,
+      clientY: 0
     };
 
     // If this is a controlled component, the result of this operation will be to

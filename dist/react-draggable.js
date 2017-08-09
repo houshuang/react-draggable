@@ -218,7 +218,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var newState /*: $Shape<DraggableState>*/ = {
 	        dragging: false,
 	        slackX: 0,
-	        slackY: 0
+	        slackY: 0,
+	        clientX: 0,
+	        clientY: 0
 	      };
 	
 	      // If this is a controlled component, the result of this operation will be to
