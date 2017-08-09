@@ -1,6 +1,175 @@
 # Changelog
 
-### 1.2.0 (Feb 5, 2015)
+### 2.2.6
+
+- Bugfix: Missing export default on TS definition (thanks @lostfictions)
+- Internal: TS test suite (thanks @lostfictions)
+
+### 2.2.5 (Apr 28, 2017)
+
+- Bugfix: Typescript definition was incorrect. [#244](https://github.com/mzabriskie/react-draggable/issues/244)
+
+### 2.2.4 (Apr 27, 2017)
+
+- Internal: Moved `PropTypes` access to `prop-types` package for React 15.5 (prep for 16)
+- Feature: Added TypeScript definitions (thanks @erfangc)
+- Bugfix: No longer can erroneously add user-select style multiple times
+- Bugfix: OffsetParent with padding problem, fixes [#218](https://github.com/mzabriskie/react-draggable/issues/218)
+- Refactor: Misc example updates.
+
+### 2.2.3 (Nov 21, 2016)
+
+- Bugfix: Fix an issue with the entire window scrolling on a drag on iDevices. Thanks @JaneCoder. See #183
+
+### 2.2.2 (Sep 14, 2016)
+
+- Bugfix: Fix references to global when grabbing `SVGElement`, see [#162](https://github.com/mzabriskie/react-draggable/issues/162)
+- Bugfix: Get `ownerDocument` before `onStop`, fixes [#198](https://github.com/mzabriskie/react-draggable/issues/198)
+
+### 2.2.1 (Aug 11, 2016)
+
+- Bugfix: Fix `getComputedStyle` error: see [#186](https://github.com/mzabriskie/react-draggable/issues/186), #190
+
+### 2.2.0 (Jul 29, 2016)
+
+- Addition: `offsetParent` property for an arbitrary ancestor for offset calculations.
+  - Fixes e.g. dragging with a floating `offsetParent`.
+    - Ref: https://github.com/mzabriskie/react-draggable/issues/170
+- Enhancement: Make this library iframe-aware.
+  - Ref: https://github.com/mzabriskie/react-draggable/pull/177
+  - Thanks to @acusti for tests
+- Bugfix: Lint/Test Fixes for new Flow & React versions
+
+### 2.1.2 (Jun 5, 2016)
+
+- Bugfix: Fix `return false` to cancel `onDrag` breaking on both old and new browsers due to missing `typeArg` and/or
+  unsupported `MouseEventConstructor`. Fixes [#164](https://github.com/mzabriskie/react-draggable/issues/164).
+
+### 2.1.1 (May 22, 2016)
+
+- Bugfix: `<DraggableCore>` wasn't calling back with the DOM node.
+- Internal: Rework test suite to use power-assert.
+
+### 2.1.0 (May 20, 2016)
+
+- Fix improperly missed `handle` or `cancel` selectors if the event originates from a child of the handle or cancel.
+  - Fixes a longstanding issue, [#88](https://github.com/mzabriskie/react-draggable/pull/88)
+  - This was pushed to a minor release as there may be edge cases (perhaps workarounds) where this changes behavior.
+
+### 2.0.2 (May 19, 2016)
+
+- Fix `cannot access clientX of undefined` on some touch-enabled platforms.
+  - Fixes [#159](https://github.com/mzabriskie/react-draggable/pull/159),
+    [#118](https://github.com/mzabriskie/react-draggable/pull/118)
+- Fixed a bug with multi-finger multitouch if > 1 finger triggered an event at the same time.
+
+### 2.0.1 (May 19, 2016)
+
+- Finally fixed the IE10 constructor bug. Thanks @davidstubbs [#158](https://github.com/mzabriskie/react-draggable/pull/158)
+
+### 2.0.0 (May 10, 2016)
+
+- This is a breaking change. See the changes below in the beta releases.
+  - Note the changes to event callbacks and `position` / `defaultPosition`.
+- Changes from 2.0.0-beta3:
+  - Small bugfixes for Flow 0.24 compatibility.
+  - Don't assume `global.SVGElement`. Fixes JSDOM & [#123](https://github.com/mzabriskie/react-draggable/issues/123).
+
+### 2.0.0-beta3 (Apr 19, 2016)
+
+- Flow comments are now in the build. Other projects, such as React-Grid-Layout and React-Resizable, will
+  rely on them in their build and export their own comments.
+
+### 2.0.0-beta2 (Apr 14, 2016)
+
+- We're making a small deviation from React Core's controlled vs. uncontrolled scheme; for convenience,
+  `<Draggable>`s with a `position` property will still be draggable, but will revert to their old position
+  on drag stop. Attach an `onStop` or `onDrag` handler to synchronize state.
+  - A warning has been added informing users of this. If you make `<Draggable>` controlled but attach no callback
+    handlers, a warning will be printed.
+
+### 2.0.0-beta1 (Apr 14, 2016)
+
+- Due to API changes, this is a major release.
+
+#### Breaking Changes:
+
+- Both `<DraggableCore>` and `<Draggable>` have had their callback types changed and unified.
+
+```js
+type DraggableEventHandler = (e: Event, data: DraggableData) => void | false;
+type DraggableData = {
+  node: HTMLElement,
+  // lastX + deltaX === x
+  x: number, y: number,
+  deltaX: number, deltaY: number,
+  lastX: number, lastY: number
+};
+```
+
+- The `start` option has been renamed to `defaultPosition`.
+- The `zIndex` option has been removed.
+
+#### Possibly Breaking Changes:
+
+- When determining deltas, we now use a new method that checks the delta against the Draggable's `offsetParent`.
+  This method allows us to support arbitrary nested scrollable ancestors without scroll handlers!
+  - This may cause issues in certain layouts. If you find one, please open an issue.
+
+#### Enhancements:
+
+- `<Draggable>` now has a `position` attribute. Its relationship to `defaultPosition` is much like
+  `value` to `defaultValue` on React `<input>` nodes. If set, the position is fixed and cannot be mutated.
+  If empty, the component will manage its own state. See [#140](https://github.com/mzabriskie/react-draggable/pull/140)
+  for more info & motivations.
+- Misc. bugfixes.
+
+### 1.4.0-beta1 (Apr 13, 2016)
+
+- Major improvements to drag tracking that now support even nested scroll boxes.
+  - This revision is being done as a pre-release to ensure there are no unforeseen issues with the offset changes.
+
+### 1.3.7 (Apr 8, 2016)
+
+- Fix `user-select` prefixing, which may be different than the prefix required for `transform`.
+
+### 1.3.6 (Apr 8, 2016)
+
+- Republished after 1.3.5 contained a bundling error.
+
+### 1.3.5 (Apr 8, 2016)
+
+- Add React v15 to devDeps. `<Draggable>` supports both `v0.14` and `v15`.
+- Enhancement: Clean up usage of browser prefixes; modern browsers will no longer use them.
+  - This also removes the duplicated `user-select` style that is created on the `<body>` while dragging.
+- Internal: Test fixes.
+
+### 1.3.4 (Mar 5, 2016)
+
+- Bugfix: Scrolling while dragging caused items to move unpredictably.
+
+### 1.3.3 (Feb 11, 2016)
+
+- Bugfix: #116: Android/Chrome are finicky; give up on canceling ghost clicks entirely.
+
+### 1.3.2 (Feb 11, 2016)
+
+- Bugfix: #116: Child inputs not focusing on touch events.
+
+### 1.3.1 (Feb 10, 2016)
+
+- Internal: Babel 6 and Flow definitions
+- Bugfix: 1.3.0 broke string bounds ('parent', selectors, etc.).
+- Bugfix: 1.3.0 wasn't updating deltaX and deltaY on a bounds hit.
+
+### 1.3.0 (Feb 10, 2016)
+
+- Possibly breaking change: bounds are calculated before `<Draggable>` fires `drag` events, as they should have been.
+- Added `'none'` axis type. This allows using `<Draggable>` somewhat like `<DraggableCore>` - state will be kept
+  internally (which makes bounds checks etc possible), but updates will not be flushed to the DOM.
+- Performance tweaks.
+
+### 1.2.0 (Feb 5, 2016)
 
 - Added arbitrary boundary selector. Now you don't have to just use `'parent'`, you can select any element
   on the page, including `'body'`.

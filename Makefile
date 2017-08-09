@@ -7,10 +7,15 @@ DIST = dist
 LIB = $(DIST)/react-draggable.js
 MIN = $(DIST)/react-draggable.min.js
 
-.PHONY: test dev build clean
+.PHONY: test dev lint build clean
 
 clean:
 	rm -rf dist
+
+lint:
+	@$(BIN)/flow
+	@$(BIN)/eslint lib/* lib/utils/* specs/*
+	@$(BIN)/tsc -p typings
 
 build: $(LIB) $(MIN)
 

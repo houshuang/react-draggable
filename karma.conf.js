@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+process.env.NODE_ENV = 'test';
 
 module.exports = function(config) {
   config.set({
@@ -19,22 +20,21 @@ module.exports = function(config) {
     },
 
     webpack: {
-      cache: true,
-      devtool: 'eval',
       module: {
         loaders: [
           {
-            test: /\.(?:js|es).?$/,
-            loader: 'babel-loader',
+            test: /\.(?:jsx?|es6)$/,
+            loader: 'babel',
             query: {
               cacheDirectory: true,
-              plugins: [
-                'typecheck'
-              ]
             },
-            exclude: /(node_modules)/
+            exclude: /node_modules/
+          },
+          {
+            test: /\.json$/,
+            loader: 'json'
           }
-        ]
+        ],
       },
       plugins: [
         new webpack.DefinePlugin({
@@ -50,6 +50,7 @@ module.exports = function(config) {
 
     webpackServer: {
       stats: {
+        chunks: false,
         colors: true
       }
     },
@@ -64,24 +65,31 @@ module.exports = function(config) {
 
     autoWatch: false,
 
-    browsers: ['PhantomJS', 'Firefox', process.env.TRAVIS ? 'Chrome_travis_ci' : 'Chrome'],
+    browsers: ['PhantomJS_custom', 'Firefox', process.env.TRAVIS ? 'Chrome_travis_ci' : 'Chrome'],
 
     customLaunchers: {
       Chrome_travis_ci: {
         base: 'Chrome',
         flags: ['--no-sandbox']
+      },
+      PhantomJS_custom: {
+        base: 'PhantomJS',
+        options: {
+          viewportSize: {width: 1024, height: 768}
+        }
       }
     },
 
-    singleRun: false,
+    singleRun: true,
 
     plugins: [
-      require('karma-jasmine'),
-      require('karma-phantomjs-launcher'),
-      require('karma-firefox-launcher'),
-      require('karma-chrome-launcher'),
-      require('karma-webpack'),
-      require('karma-phantomjs-shim')
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+      'karma-firefox-launcher',
+      'karma-chrome-launcher',
+      'karma-ie-launcher',
+      'karma-webpack',
+      'karma-phantomjs-shim',
     ]
   });
 };

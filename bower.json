@@ -1,9 +1,10 @@
 {
   "name": "react-draggable",
-  "version": "1.2.0",
+  "version": "2.2.6",
   "homepage": "https://github.com/mzabriskie/react-draggable",
   "authors": [
-    "Matt Zabriskie"
+    "Matt Zabriskie",
+    "Samuel Reed"
   ],
   "description": "React draggable component",
   "main": "./dist/react-draggable.js",
